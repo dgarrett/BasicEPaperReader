@@ -1,0 +1,9 @@
+
+#define WIFI_AP_NAME ""
+#define WIFI_PASSWORD ""
+
+#define POCKET_CONSUMER_KEY ""
+#define POCKET_ACCESS_KEY ""
+
+#define AYLIEN_APPLICATION_ID ""
+#define AYLIEN_APPLICATION_KEY ""

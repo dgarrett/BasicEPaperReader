@@ -8,6 +8,23 @@
 - Optional: Basic USB logic analyzer (https://smile.amazon.com/gp/product/B077LSG5P2/)
 
 ## Wiring Instructions
+The specific wiring is going to be different depending on what board you're using. These instructions are for the Adafruit HUZZAH32
+
+Connect the following:
+- SDI/SCK -> MOSI
+- SCK/SCLK -> SCK
+- CS -> 15
+- DC -> 33
+- RST/Reset -> 27
+- Busy -> 32
+
+If you want to use different pins, you can change the pin configurations for `GxIO_Class` and `GxEPD_Class` in BasicEPaperReader.ino
+
+You might also try switching the `VSPI` option on the `SPIClass` object to `HSPI`. `VSPI` and `HSPI` are the two SPI interfaces exposed by the ESP32.
+
+For each of the SPST switches, connect one side to ground and one side to pins: 14, 21, 22, 23
+
+We'll use the ESP32's internal pullup resistors, so no external resistors are needed.
 
 ## Software Setup
 1. Install Arduino IDE https://www.arduino.cc/en/Main/Software
@@ -29,9 +46,9 @@
    
 
 ## Using a Digital Logic Analyzer to see what's happening
-1. Connect your logic analyzer's ground lead to the circuit's ground
-2. Connect other analyzer channels to the other SPI connections to the EPaper display. The important ones are CS, CLK, and DIN.
-3. Download the supported software for your logic analyzer. Ex: https://www.saleae.com/downloads/
+1. Download the supported software for your logic analyzer. Ex: https://www.saleae.com/downloads/
+2. Connect your logic analyzer's ground lead to the circuit's ground
+3. Connect other analyzer channels to the other SPI connections to the EPaper display. The important ones are CS, CLK, and DIN.
 4. Add an Analyzer configuration for SPI. Set MOSI to the channel connected to the EPaper display's DIN pin; set MISO to None; set Clock to the CLK pin; set Enable to the CS pin. Other options should remain at their defaults.
 5. Select the "Setup Trigger" button on the channel connected to the CS pin. Set it to Trigger on Falling Edge.
 6. Start the logic analyzer. Click a button on the BasicEPaperReader setup and let the logic analyzer capture the SPI communication sent to the EPaper display to change what is being displayed.

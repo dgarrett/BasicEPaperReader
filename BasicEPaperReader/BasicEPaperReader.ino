@@ -1,5 +1,8 @@
 #include "Keys.h"
 #include "Certs.h"
+#include <litehtml.h>
+#include "litehtml_container.h"
+#include "css.h"
 
 #include <Arduino.h>
 
@@ -17,8 +20,8 @@
 #include <ArduinoJson.h>
 
 // select the display class to use, only one
-#include <GxGDEP015OC1/GxGDEP015OC1.h>    // 1.54" b/w
-//#include <GxGDEW042T2/GxGDEW042T2.h>      // 4.2" b/w
+//#include <GxGDEP015OC1/GxGDEP015OC1.h>    // 1.54" b/w
+#include <GxGDEW042T2/GxGDEW042T2.h>      // 4.2" b/w
 
 #include GxEPD_BitmapExamples
 
@@ -291,7 +294,23 @@ void displayArticleSummary(const char* url)
       }
       
       // Extract value
-      display.println(root["article"].as<char*>());
+      const char* article = root["article"].as<char*>();
+      display.println(article);
+      {
+        Serial.println("abc1");
+        litehtml::context context;
+        context.load_master_stylesheet(default_css);
+        container contain;
+        Serial.println("abc2");
+        //char *test = "<html><body>Hello</body></html>";
+        char *test = "<html><body><div>Hello</div></body></html>";
+        auto html = litehtml::document::createFromString(test, &contain, &context);
+        Serial.println("abc3");
+        html->render(100);
+        litehtml::position pos(0, 0, 100, 100);
+        Serial.println("abc4");
+        html->draw(0, 0, 0, &pos);
+      }
       refreshScreen();
       
       client.stop();
